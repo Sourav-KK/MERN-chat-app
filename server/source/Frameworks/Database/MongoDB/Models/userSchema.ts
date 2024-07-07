@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import { AVATAR } from "../../../../Configurations/dDBConfig";
+import { AVATAR } from "../../../../Configurations/DBConfig";
 
 const userSchema = new Schema(
   {
