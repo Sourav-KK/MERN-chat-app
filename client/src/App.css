@@ -1,0 +1,13 @@
+.app {
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 2rem;
+  background-image: url("/background.png");
+  text-align: center;
+  /* align-items: center; */
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
