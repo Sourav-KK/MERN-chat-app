@@ -1,4 +1,3 @@
-import Server from "./Frameworks/Webserver";
-import "./Frameworks/Database/MongoDB/mongoDBConnection";
+import Server from "./Frameworks/express";
 
 Server();
