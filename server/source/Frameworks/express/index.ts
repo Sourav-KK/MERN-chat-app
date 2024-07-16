@@ -10,7 +10,7 @@ const Server = async () => {
     startServer();
     await dbConnect();
     routes();
-    app.use(errorHandlingMiddleWare);
+    // app.use(errorHandlingMiddleWare);
   } catch (error) {
     console.log("err in server");
     app.use(errorHandlingMiddleWare);

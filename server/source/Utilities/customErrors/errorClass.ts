@@ -38,5 +38,25 @@ class EmptyFieldError extends Error {
   }
 }
 
-export { EmailError, PasswordError, DuplicateError, EmptyFieldError };
+class InvalidUrlError extends Error {
+  errCode: number;
+
+  constructor(errCode: number, message: string) {
+    super(message);
+    this.errCode = errCode;
+    this.name = "InvalidUrlError";
+  }
+}
+
+class MongoDBError extends Error {
+  errCode: number;
+
+  constructor(errCode: number, message: string) {
+    super(message);
+    this.errCode = errCode;
+    this.name = "MongoDBError";
+  }
+}
+
+export { EmailError, PasswordError, DuplicateError, EmptyFieldError,InvalidUrlError,MongoDBError };
 // throw new PasswordError(404, "Entered password is incorrect");

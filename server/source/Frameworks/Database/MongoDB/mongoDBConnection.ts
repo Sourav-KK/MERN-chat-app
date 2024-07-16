@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { MONGO_URI } from "../../../configs/DBConfig";
+import { MongoDBError } from "../../../Utilities/customErrors/errorClass";
 
 // connect()
 //   .then(() => console.info("MongoDb connection successfull"))
@@ -28,7 +29,10 @@ async function connection() {
   } catch (error) {
     console.log("MongoDB connection error");
 
-    throw new Error("Unable to connect to database. Try again later");
+    throw new MongoDBError(
+      404,
+      "Unable to connect to database. Try again later"
+    );
   }
 }
 export default connection;

@@ -1,4 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import {
+  InvalidUrlError,
+  MongoDBError,
+} from "../../../Utilities/customErrors/errorClass";
 
 const errorHandlingMiddleWare = async (
   err: any,
@@ -6,7 +10,15 @@ const errorHandlingMiddleWare = async (
   res: Response,
   _next: NextFunction
 ) => {
-  console.log(":inside erro handleer");
+  console.log(":inside erro handleer", err);
+
+  if (err instanceof MongoDBError) {
+    return res.status(err.errCode).json({ msg: err.message });
+  }
+
+  if (err instanceof InvalidUrlError) {
+    return res.status(err.errCode).json({ msg: err.message });
+  }
 
   if (err.isJoi) {
     //     console.log("error.message:", err?.message);
