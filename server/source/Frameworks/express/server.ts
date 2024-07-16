@@ -1,4 +1,4 @@
-import { PORTNO } from "../../Configurations/config";
+import { PORTNO } from "../../configs/config";
 import { app } from "./express";
 
 const serverStaer = () => {
