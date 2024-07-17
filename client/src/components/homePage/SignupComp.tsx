@@ -1,10 +1,13 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { ValuesI } from "../../utilities/Interfaces/Forms";
-import { signupFormSchema } from "../../utilities/validations/SignupValidation";
+import { SignupFormSchema_I } from "../../utilities/Interfaces/Forms";
+import { signupFormValidator } from "../../utilities/validations/SignupValidation";
 import { ZodError } from "zod";
 import EyeToggleComp from "./EyeToggleComp";
 import ResetBtn from "../Buttons/ResetBtn";
+import axios from "axios";
+// import { signupFormValidator } from "../../utilities/validations/SignupValidation";
+// import Joi from "joi";
 
 const SignupComp = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -20,23 +23,39 @@ const SignupComp = () => {
     console.log("pasword:", showPassword);
   };
 
+  const initialValues = {
+    fullName: "",
+    userName: "",
+    email: "",
+    password: "",
+    gender: "",
+  };
+
   const formikForm = useFormik({
-    initialValues: {
-      name: "",
-      userName: "",
-      email: "",
-      password: "",
-      gender: "",
-    },
-    onSubmit: async (values: ValuesI) => {
+    initialValues: initialValues,
+
+    onSubmit: async (values: SignupFormSchema_I) => {
       console.log(JSON.stringify(values, null, 2));
     },
 
-    validate(values) {
+    initialErrors: initialValues,
+
+    validate: async (values) => {
+      setIsSubmitting(true);
       try {
-        signupFormSchema.parse(values);
+        const userData = Object.freeze({ values });
+        signupFormValidator.parse(userData);
+
+        const config = { headers: { "Content-type": "application/json" } };
+
+        const serverResponse = await axios.post("/api/auth", userData, config);
+        console.log("serverResponse:", serverResponse);
+        setIsSubmitting(false);
       } catch (error) {
+        console.log("in errroe", error);
+        setIsSubmitting(false);
         if (error instanceof ZodError) {
+          console.log("error formik:", error.issues);
           return error.formErrors.fieldErrors;
         }
       }
@@ -52,16 +71,16 @@ const SignupComp = () => {
         {/* name */}
         <div className="flex flex-col w-full">
           <p className={"text-red-600 text-left font-semibold"}>
-            {formikForm.errors.name}
+            {formikForm.errors.fullName}
           </p>
           <input
             type="text"
-            name="name"
+            name="fullName"
             className={"bg-slate-100 border-2 p-1 text-stone-900 rounded-sm"}
             placeholder="FULL NAME"
             autoComplete={"new-name"}
             onChange={formikForm.handleChange}
-            value={formikForm.values.name}
+            value={formikForm.values.fullName}
           />
         </div>
 

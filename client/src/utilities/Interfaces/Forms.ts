@@ -1,5 +1,5 @@
-interface ValuesI {
-  name: string;
+interface SignupFormSchema_I {
+  fullName: string;
   email: string;
   userName: string;
   password: string;
@@ -11,4 +11,4 @@ interface LoginValuesI {
   password: string;
 }
 
-export type { ValuesI, LoginValuesI };
+export type { SignupFormSchema_I, LoginValuesI };
