@@ -26,7 +26,7 @@ const LoginComp = () => {
     },
 
     onSubmit: async (values: LoginValuesI) => {
-      console.log("onsubmit")
+      console.log("onsubmit");
       console.log(JSON.stringify(values, null, 2));
     },
 
@@ -35,9 +35,14 @@ const LoginComp = () => {
       values.password = "";
     },
     validate(values) {
+      setIsSubmitting(true);
+
       try {
         loginFormSchema.parse(values);
+        setIsSubmitting(false);
       } catch (error) {
+        setIsSubmitting(false);
+
         if (error instanceof ZodError) {
           return error.formErrors.fieldErrors;
         }
