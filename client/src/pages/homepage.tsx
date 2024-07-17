@@ -33,7 +33,13 @@ const Homepage = () => {
               <a
                 role="tab"
                 className={`tab ${
+<<<<<<< HEAD
                   loginTab && "tab-active md:text-lg text-slate-200"
+=======
+                  loginTab
+                    ? "tab-active md:text-lg text-stone-200"
+                    : "tab md:text-lg text-slate-200"
+>>>>>>> 5607caf7a3795fd6618d20f5fe37795eb341a2dd
                 } md:text-lg text-stone-800`}
                 onClick={handleLoginTab}
               >
@@ -42,8 +48,16 @@ const Homepage = () => {
               <a
                 role="tab"
                 className={`tab ${
+<<<<<<< HEAD
                   signupTab && "tab-active md:text-lg text-slate-200"
                 } md:text-lg text-stone-800`}
+=======
+                  signupTab
+                    ? "tab-active md:text-lg text-stone-200"
+                    : "tab md:text-lg text-slate-200"
+                } 
+                  md:text-lg text-stone-800`}
+>>>>>>> 5607caf7a3795fd6618d20f5fe37795eb341a2dd
                 onClick={handleSignupTab}
               >
                 Sign Up

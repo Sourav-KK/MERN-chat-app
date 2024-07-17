@@ -24,13 +24,26 @@ const LoginComp = () => {
       emailORuserName: "",
       password: "",
     },
+<<<<<<< HEAD
     onSubmit: async (values: LoginValuesI) => {
       console.log(JSON.stringify(values, null, 2));
     },
+=======
+
+    onSubmit: async (values: LoginValuesI) => {
+      console.log("onsubmit")
+      console.log(JSON.stringify(values, null, 2));
+    },
+
+>>>>>>> 5607caf7a3795fd6618d20f5fe37795eb341a2dd
     onReset(values: LoginValuesI) {
       values.emailORuserName = "";
       values.password = "";
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5607caf7a3795fd6618d20f5fe37795eb341a2dd
     validate(values) {
       try {
         loginFormSchema.parse(values);
