@@ -119,7 +119,7 @@ const SignupComp = () => {
         {/* gender */}
         <div className="flex flex-col w-full">
           <p className={"text-red-600 text-left font-semibold"}>
-            {formikForm.errors.userName}
+            {formikForm.errors.gender}
           </p>
           <select
             name="gender"

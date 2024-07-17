@@ -35,8 +35,8 @@ const Homepage = () => {
                 className={`tab ${
                   loginTab
                     ? "tab-active md:text-lg text-stone-200"
-                    : "tab md:text-lg text-slate-200"
-                } md:text-lg text-stone-800`}
+                    : "tab md:text-lg text-stone-800"
+                } md:text-lg `}
                 onClick={handleLoginTab}
               >
                 Login
@@ -46,9 +46,9 @@ const Homepage = () => {
                 className={`tab ${
                   signupTab
                     ? "tab-active md:text-lg text-stone-200"
-                    : "tab md:text-lg text-slate-200"
+                    : "tab md:text-lg text-stone-800"
                 } 
-                  md:text-lg text-stone-800`}
+                  md:text-lg `}
                 onClick={handleSignupTab}
               >
                 Sign Up
