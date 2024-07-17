@@ -5,57 +5,76 @@ import { signupFormValidator } from "../../utilities/validations/SignupValidatio
 import { ZodError } from "zod";
 import EyeToggleComp from "./EyeToggleComp";
 import ResetBtn from "../Buttons/ResetBtn";
-import axios from "axios";
-// import { signupFormValidator } from "../../utilities/validations/SignupValidation";
-// import Joi from "joi";
+import axios, { AxiosError } from "axios";
+import { trimObjectValues } from "../../utilities/trimObjValues";
+import capitalizeLetter from "../../utilities/capitalizeFirstLetter";
+import { axios_user } from "../../utilities/Axios";
+import { initialValues } from "../../utilities/formHelpers";
 
 const SignupComp = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isServerError, setServerError] = useState<boolean>(false);
+  const [isError, setError] = useState<string>("");
+
+  const [formValues, setFormValues] =
+    useState<SignupFormSchema_I>(initialValues);
 
   const displayPassword = () => {
     setShowPassword(true);
-    console.log("pasword:", showPassword);
   };
 
   const hidePassword = () => {
     setShowPassword(false);
-    console.log("pasword:", showPassword);
-  };
-
-  const initialValues = {
-    fullName: "",
-    userName: "",
-    email: "",
-    password: "",
-    gender: "",
   };
 
   const formikForm = useFormik({
     initialValues: initialValues,
 
-    onSubmit: async (values: SignupFormSchema_I) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values: SignupFormSchema_I = formValues) => {
+      setIsSubmitting(true);
+
+      try {
+        const config = { headers: { "Content-type": "application/json" } };
+
+        const serverResponse = await axios.post("/api/auth", values, config);
+        console.log("serverResponse:", serverResponse);
+
+        const response = await axios_user.post("/auth", values, {
+          timeout: 10000,
+          headers: config.headers,
+        });
+
+        console.log("response:", response);
+        setIsSubmitting(false);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          setServerError(true);
+
+          if (error.response?.status === 404) {
+            setError("Request Failed. Please try again later");
+          }
+          console.log("error.response", error.response);
+          console.log("error.message", error.message);
+        }
+      }
     },
 
     initialErrors: initialValues,
 
-    validate: async (values) => {
-      setIsSubmitting(true);
+    validate: async (values: SignupFormSchema_I) => {
       try {
-        const userData = Object.freeze({ values });
+        const userVal: SignupFormSchema_I = trimObjectValues(values);
+        userVal.fullName = capitalizeLetter(userVal.fullName);
+
+        const userData = Object.freeze({ ...userVal });
+        setFormValues(userData);
         signupFormValidator.parse(userData);
-
-        const config = { headers: { "Content-type": "application/json" } };
-
-        const serverResponse = await axios.post("/api/auth", userData, config);
-        console.log("serverResponse:", serverResponse);
-        setIsSubmitting(false);
       } catch (error) {
         console.log("in errroe", error);
         setIsSubmitting(false);
         if (error instanceof ZodError) {
-          console.log("error formik:", error.issues);
+          console.log("error formik validation:", error.issues);
           return error.formErrors.fieldErrors;
         }
       }
@@ -64,6 +83,8 @@ const SignupComp = () => {
 
   return (
     <div className="bg-transparent ">
+      {/* axios error */}
+      {isServerError && <p className="text-lg text-red-500">{isError}</p>}
       <form
         onSubmit={formikForm.handleSubmit}
         className="grid grid-cols-1 bg-transparent space-y-4"

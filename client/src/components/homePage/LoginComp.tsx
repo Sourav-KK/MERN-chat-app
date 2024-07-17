@@ -85,6 +85,8 @@ const LoginComp = () => {
                 "bg-slate-100 border-2 p-1 text-stone-900 rounded-sm w-4/5 "
               }
               placeholder="PASSWORD"
+              onChange={formikLoginForm.handleChange}
+              value={formikLoginForm.values.password}
             />
             <EyeToggleComp
               displayPassword={displayPassword}
