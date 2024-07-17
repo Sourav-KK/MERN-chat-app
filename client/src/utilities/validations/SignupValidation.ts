@@ -35,5 +35,9 @@ export const signupFormValidator = Zod.object({
     .max(16, "Maximum 16 characters"),
 });
 
+<<<<<<< HEAD
 export type signupFormValidator_I = typeof signupFormValidator
 >>>>>>> 5607caf7a3795fd6618d20f5fe37795eb341a2dd
+=======
+export type signupFormValidator_I = typeof signupFormValidator;
+>>>>>>> client
