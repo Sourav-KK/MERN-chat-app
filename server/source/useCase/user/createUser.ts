@@ -1,6 +1,7 @@
 import { T_superUserUserCase } from "../../Frameworks/express/services/userAuth";
 import { createPassword } from "../../Utilities/bcryptUtils";
 import capitalizeWords from "../../Utilities/capitalizeWord";
+import { DuplicateError } from "../../Utilities/customErrors/errorClass";
 import defaultProfilePic from "../../Utilities/defaultProfilePic";
 import { I_Signup_FormData } from "../../Utilities/interface/I_FormData";
 import { trimObjectValues } from "../../Utilities/trimObjVlues";
@@ -35,7 +36,10 @@ const createUser = async (
     const isUserNameExists = await userNameSearch_super(trimObj.userName);
 
     if (isUserNameExists) {
-      throw new Error(`User name: ${formData.userName} already taken`);
+      throw new DuplicateError(
+        400,
+        `User name: ${formData.userName} already taken`
+      );
     }
 
     // password hashing
@@ -46,7 +50,7 @@ const createUser = async (
     const val = await createUser_super(userDetails); // create new user
     return val;
   } catch (error) {
-    console.log("error found in create user use case");
+    console.log("error found in create user use case:", error);
     throw error;
   }
 };
