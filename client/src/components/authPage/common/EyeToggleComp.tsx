@@ -1,9 +1,7 @@
 const EyeToggleComp = ({
-  displayPassword,
-  hidePassword,
+  togglePasswordView,
 }: {
-  displayPassword: () => void;
-  hidePassword: () => void;
+  togglePasswordView: (val: number) => void;
 }) => {
   return (
     <div className="grid place-content-center border-2  rounded-sm w-1/5 bg-slate-100">
@@ -22,7 +20,7 @@ const EyeToggleComp = ({
           strokeLinejoin="round"
           className="lucide lucide-eye swap-on "
           color="#242629"
-          onClick={displayPassword}
+          onClick={() => togglePasswordView(1)}
         >
           <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
           <circle cx="12" cy="12" r="3" />
@@ -40,7 +38,7 @@ const EyeToggleComp = ({
           strokeLinejoin="round"
           color="#242629"
           className="lucide lucide-eye-off swap-off "
-          onClick={hidePassword}
+          onClick={() => togglePasswordView(0)}
         >
           <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
           <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
