@@ -1,5 +1,12 @@
 import Joi from "joi";
-import { alphaNumsSplChar, aplhabets, emailRegex, genderRegex } from "../Regex";
+
+import {
+  alphaNumsSplChar,
+  aplhabets,
+  emailRegex,
+  genderRegex,
+  passwordRegex,
+} from "../Regex";
 
 export const signupFormValidator = Joi.object({
   fullName: Joi.string()
@@ -13,7 +20,7 @@ export const signupFormValidator = Joi.object({
     .trim()
     .required()
     .min(4)
-    .max(10)
+    .max(16)
     .regex(
       alphaNumsSplChar,
       "User Name should contain only aplhabets, numbers & special characters"
@@ -23,16 +30,19 @@ export const signupFormValidator = Joi.object({
     .email()
     .trim()
     .required()
-    .min(6)
+    .min(4)
     .max(16)
     .regex(emailRegex, "Unable to validate email"),
 
   password: Joi.string()
     .trim()
     .required()
-    .min(4)
+    .min(6)
     .max(16)
-    .regex(alphaNumsSplChar),
+    .regex(
+      passwordRegex,
+      "Password should contain uppercase, lowercase, number, special& character"
+    ),
 
   gender: Joi.string()
     .trim()

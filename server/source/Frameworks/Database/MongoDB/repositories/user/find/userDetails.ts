@@ -4,13 +4,10 @@ import { TypeUserModel } from "../../../../../../entities/user_schema.tntities";
 const userdetailsRepository = (model: TypeUserModel) => {
   const userNameExists = async (userName: string) => {
     try {
-      console.log("in uerdetailis repo");
       const response = await model.findOne({ userName });
-      console.log("is username exists reponse:", response);
       return response;
     } catch (error) {
-      console.error("error in userNameExists:", error);
-      throw error
+      throw error;
     }
   };
 
@@ -22,7 +19,7 @@ const userdetailsRepository = (model: TypeUserModel) => {
       return response;
     } catch (error) {
       console.error("error in fullName:", error);
-      throw error
+      throw error;
     }
   };
 

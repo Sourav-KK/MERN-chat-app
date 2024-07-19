@@ -74,7 +74,7 @@ const userLoginUseCase = async (
       cookieName: "encryptedToken",
       cookieValue: token,
       cookieOptions,
-      successMessage: `Welcome backe ${isEmailORUserName.userName}`,
+      successMessage: `Welcome backe ${userData.userName}`,
       userData,
     });
 
