@@ -1,4 +1,6 @@
-const ResetBtn = ({ handleReset }: { handleReset: (e: any) => void }) => {
+import { HandleresetType } from "../../../Hooks/useFormikSignup";
+
+const ResetBtn = ({ handleReset }: { handleReset: HandleresetType }) => {
   return (
     <button
       className="btn btn-xs btn-circle btn-ghost"

@@ -5,6 +5,7 @@ import {
   alphaNumsSplCharRegex,
   emailRegex,
   genderRegex,
+  passwordRegex,
 } from "../regex";
 
 export const signupFormValidator = Zod.object({
@@ -35,10 +36,10 @@ export const signupFormValidator = Zod.object({
   password: Zod.string({ required_error: "Password required" })
     .min(6, "Minimum 6 characters")
     .max(16, "Maximum 16 characters")
-    .regex(
-      alphaNumsSplCharRegex,
-      "Password should contain alphabets, special characters & numbers"
-    ),
+    .regex(passwordRegex, {
+      message:
+        "Password should contain uppercase, lowercase, number, special& character",
+    }),
 });
 
 export type signupFormValidator_I = typeof signupFormValidator;

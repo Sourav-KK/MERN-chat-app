@@ -5,3 +5,8 @@ export const initialValues = {
   password: "",
   gender: "",
 };
+
+export const initialLoginValues = {
+  emailORuserName: "",
+  password: "",
+};

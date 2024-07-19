@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SignupComp from "../components/homePage/SignupComp";
-import LoginComp from "../components/homePage/LoginComp";
+import SignupComp from "../components/authPage/SignupComp";
+import LoginComp from "../components/authPage/LoginComp";
 
 const Homepage = () => {
   const [loginTab, setLogin] = useState<boolean>(true);
