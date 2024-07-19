@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "hash": "146be08d",
   "configHash": "3d449606",
   "lockfileHash": "7c6222f4",
@@ -11,5 +12,12 @@
       "needsInterop": false
     }
   },
+=======
+  "hash": "df84aaf7",
+  "configHash": "3d449606",
+  "lockfileHash": "e3b0c442",
+  "browserHash": "77184cd4",
+  "optimized": {},
+>>>>>>> server
   "chunks": {}
 }

@@ -5,7 +5,7 @@ import userAuthRoute from "./userAuthRoute";
 
 const index = () => {
   app.use("/auth", userAuthRoute()); ///user
-  app.use("/auth", userAuthRoute()); ///user
+  // app.use("/auth", adminAuthRoute()); ///admin
 
   app.use(invalidURLMiddleware);
   app.use(errorHandlingMiddleWare);
