@@ -4,6 +4,7 @@ import {
   InvalidUrlError,
   MongoDBError,
 } from "../../../Utilities/customErrors/errorClass";
+import errResponseOptions from "../../../Utilities/customErrors/errResponseOptions";
 
 const errorHandlingMiddleWare = async (
   err: any,
@@ -14,9 +15,14 @@ const errorHandlingMiddleWare = async (
   console.log("error in err handleer:", err);
 
   if (err instanceof DuplicateError) {
-    return res
-      .status(err.errCode)
-      .json({ errMessage: err.message, errName: err.name });
+    const options = errResponseOptions(
+      "axiosErr",
+      err.message,
+      err.name,
+      "DuplicateRecord"
+    );
+
+    return res.status(err.errCode).json(options);
   }
 
   if (err instanceof MongoDBError) {
@@ -24,15 +30,26 @@ const errorHandlingMiddleWare = async (
   }
 
   if (err instanceof InvalidUrlError) {
-    return res.status(err.errCode).json({ msg: err.message });
+    const options = errResponseOptions(
+      "axiosErr",
+      err.message,
+      err.name,
+      "InvalidURL"
+    );
+
+    return res.status(err.errCode).json(options);
   }
 
   if (err.isJoi) {
-    //     console.log("error.message:", err?.message);
     console.log("err.details:", err?.details[0]);
-    return res
-      .status(420)
-      .json({ errPath: err.details[0].path, validationErrMsg: err.message });
+    const options = errResponseOptions(
+      err.details[0].path,
+      err.message,
+      err.name,
+      "ValidationError"
+    );
+
+    return res.status(420).json(options);
   }
 
   // Mongodb error
@@ -44,9 +61,16 @@ const errorHandlingMiddleWare = async (
 
     const message = `${arr[0][0]}: ${arr[0][1]} already registered`;
 
-    return res
-      .status(400)
-      .json({ errMessage: message, errResaon: "DuplicateRecord" });
+    const options = errResponseOptions(
+      "axiosErr",
+      message,
+      err.name,
+      "DuplicateError"
+    );
+
+    return res.status(400).json(options);
   }
+
+  //  database error
 };
 export default errorHandlingMiddleWare;
