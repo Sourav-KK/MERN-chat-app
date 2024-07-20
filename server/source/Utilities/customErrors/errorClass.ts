@@ -58,5 +58,24 @@ class MongoDBError extends Error {
   }
 }
 
-export { EmailError, PasswordError, DuplicateError, EmptyFieldError,InvalidUrlError,MongoDBError };
-// throw new PasswordError(404, "Entered password is incorrect");
+class DatabaseError extends Error {
+  errCode: number;
+  path: string;
+
+  constructor(errCode: number, message: string, errPath: string) {
+    super(message);
+    this.errCode = errCode;
+    this.name = "MongoDBError";
+    this.path = errPath;
+  }
+}
+
+export {
+  EmailError,
+  PasswordError,
+  DuplicateError,
+  EmptyFieldError,
+  InvalidUrlError,
+  MongoDBError,
+  DatabaseError,
+};
