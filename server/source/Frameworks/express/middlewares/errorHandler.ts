@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  AuthenticationError,
   DuplicateError,
+  EmptyFieldError,
   InvalidUrlError,
   MongoDBError,
 } from "../../../Utilities/customErrors/errorClass";
@@ -12,7 +14,19 @@ const errorHandlingMiddleWare = async (
   res: Response,
   _next: NextFunction
 ) => {
-  console.log("error in err handleer:", err);
+  console.log("error in errorHandlingMiddleWare:", err);
+
+  if (err instanceof AuthenticationError) {
+    return res
+      .status(err.errCode)
+      .json({ errMessage: err.message, errName: err.name });
+  }
+
+  if (err instanceof EmptyFieldError) {
+    return res
+      .status(err.errCode)
+      .json({ errMessage: err.message, errName: err.name });
+  }
 
   if (err instanceof DuplicateError) {
     const options = errResponseOptions(
@@ -31,7 +45,7 @@ const errorHandlingMiddleWare = async (
 
   if (err instanceof InvalidUrlError) {
     const options = errResponseOptions(
-      "axiosErr",
+      "axiosErrrrr",
       err.message,
       err.name,
       "InvalidURL"
@@ -71,6 +85,6 @@ const errorHandlingMiddleWare = async (
     return res.status(400).json(options);
   }
 
-  //  database error
+  return res.status(400).json({ errMessage: err?.message });
 };
 export default errorHandlingMiddleWare;

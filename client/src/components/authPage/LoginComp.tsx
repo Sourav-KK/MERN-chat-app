@@ -20,7 +20,7 @@ const LoginComp = () => {
   const formikLoginForm = useFormikLogin({ setIsSubmitting });
 
   return (
-    <div className="bg-transparent">
+    <div className="bg-transparent" id="loginComp">
       <form
         onSubmit={formikLoginForm.handleSubmit}
         className="grid grid-cols-1 bg-transparent space-y-4"

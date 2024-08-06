@@ -1,13 +1,14 @@
 import { useFormik } from "formik";
 import { initialValues } from "../utilities/formHelpers";
 import { SignupFormSchema_I } from "../utilities/Interfaces/Forms";
-import { axios_user } from "../utilities/Axios";
-import { HTTPHeader } from "../utilities/Axios/axiosHelpers";
 import { AxiosError } from "axios";
 import { trimObjectValues } from "../utilities/trimObjValues";
 import capitalizeLetter from "../utilities/capitalizeFirstLetter";
 import { signupFormValidator } from "../utilities/validations/SignupValidation";
 import { ZodError } from "zod";
+import toast from "react-hot-toast";
+import postUserMethod from "../utilities/Axios/postMethod";
+import { SIGNUP_PATH } from "../utilities/Axios/paths";
 
 // custom hook for handling formik functionality for signup
 const useFormikSignup = ({
@@ -16,27 +17,39 @@ const useFormikSignup = ({
   setIsSubmitting,
   setServerError,
   setError,
+  handleAuthTabToggle,
 }: {
   formValues: SignupFormSchema_I;
   setFormValues: React.Dispatch<React.SetStateAction<SignupFormSchema_I>>;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   setServerError: React.Dispatch<React.SetStateAction<boolean>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  handleAuthTabToggle: (val: boolean) => void;
 }) => {
   const signupFormik = useFormik({
     initialValues: initialValues,
 
     initialErrors: initialValues,
 
-    onSubmit: async (values: SignupFormSchema_I = formValues) => {
+    onSubmit: async (
+      values: SignupFormSchema_I = formValues,
+      { resetForm }
+    ) => {
       setIsSubmitting(true);
 
       try {
         console.log("Form values:", values);
-        const response = await axios_user.post("/auth", values, {
-          timeout: 10000,
-          headers: HTTPHeader.headers,
-        });
+
+        const response = await postUserMethod(SIGNUP_PATH, values);
+
+        console.log("response:", response);
+        if (response.status === 200) {
+          toast(response.data);
+          setIsSubmitting(false);
+          resetForm();
+          handleAuthTabToggle(true);
+          return;
+        }
 
         console.log("response:", response);
         setIsSubmitting(false);
@@ -47,6 +60,8 @@ const useFormikSignup = ({
           if (error.response?.status === 404) {
             setError("Request Failed. Please try again later");
           }
+
+          setError(error.response?.data.errMessage);
           console.log("error.response", error.response);
           console.log("error.message", error.message);
         }
@@ -69,6 +84,14 @@ const useFormikSignup = ({
           return error.formErrors.fieldErrors;
         }
       }
+    },
+
+    onReset(values) {
+      values.email = "";
+      values.password = "";
+      values.userName = "";
+      values.gender = "";
+      values.fullName = "";
     },
   });
 

@@ -6,7 +6,11 @@ import { SignupFormSchema_I } from "../../utilities/Interfaces/Forms";
 import PasswordComponent from "./common/passwordComponent";
 import InputComp from "./common/inputComp";
 
-const SignupComp = () => {
+const SignupComp = ({
+  handleAuthTabToggle,
+}: {
+  handleAuthTabToggle: (val: boolean) => void;
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isServerError, setServerError] = useState<boolean>(false);
@@ -30,6 +34,7 @@ const SignupComp = () => {
     setIsSubmitting,
     setServerError,
     setError,
+    handleAuthTabToggle
   });
 
   return (

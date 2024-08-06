@@ -21,9 +21,9 @@ class PasswordError extends Error {
 class DuplicateError extends Error {
   errCode: number;
 
-  constructor(errCode: number, message: string) {
+  constructor(message: string) {
     super(message);
-    this.errCode = errCode;
+    this.errCode = 404;
     this.name = "DuplicateError";
   }
 }
@@ -31,9 +31,9 @@ class DuplicateError extends Error {
 class EmptyFieldError extends Error {
   errCode: number;
 
-  constructor(errCode: number, message: string) {
+  constructor(message: string) {
     super(message);
-    this.errCode = errCode;
+    this.errCode = 422;
     this.name = "EmptyFieldError";
   }
 }
@@ -41,9 +41,9 @@ class EmptyFieldError extends Error {
 class InvalidUrlError extends Error {
   errCode: number;
 
-  constructor(errCode: number, message: string) {
+  constructor(message: string) {
     super(message);
-    this.errCode = errCode;
+    this.errCode = 404;
     this.name = "InvalidUrlError";
   }
 }
@@ -70,6 +70,17 @@ class DatabaseError extends Error {
   }
 }
 
+class AuthenticationError extends Error {
+  errCode: number;
+
+  constructor() {
+    super();
+    this.message = "Please login";
+    this.errCode = 401;
+    this.name = "authError";
+  }
+}
+
 export {
   EmailError,
   PasswordError,
@@ -78,4 +89,5 @@ export {
   InvalidUrlError,
   MongoDBError,
   DatabaseError,
+  AuthenticationError,
 };

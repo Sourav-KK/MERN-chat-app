@@ -1,5 +1,6 @@
 import { ObjectId } from "mongoose";
 import { TypeUserModel } from "../../../../../../entities/user_schema.tntities";
+import { repoOptionsAllUsers_I } from "../../../../../../Utilities/interface_nd_Types/options";
 
 const userdetailsRepository = (model: TypeUserModel) => {
   const userNameExists = async (userName: string) => {
@@ -26,8 +27,8 @@ const userdetailsRepository = (model: TypeUserModel) => {
   const userId = async (id: ObjectId) => {
     try {
       console.log("in uerdetailis repo");
-      const response = await model.findById({ _id: id });
-      console.log("is id exists reponse:", response);
+      const response = await model.findById({ _id: id }, { password: 0 });
+      // console.log("is id exists reponse:", response);
       return response;
     } catch (error) {
       console.error("error in id:", error);
@@ -50,12 +51,56 @@ const userdetailsRepository = (model: TypeUserModel) => {
       console.log("in emailOrUserName uerdetailis repo");
 
       const response = await model.findOne({
-        $or: [{ userName: value }, { email: value }],
+        $or: [
+          { userName: { $regex: value, $options: "i" } }, // case insensitive
+          { email: { $regex: value, $options: "i" } }, // case insensitive
+        ],
       });
       console.log("is emailOrUserName exists reponse:", response);
       return response;
     } catch (error) {
       console.error("error in emailOrUserName:", error);
+      throw error;
+    }
+  };
+
+  // search all users in the db except the logged in user
+  const allMatchingUsers = async (options: repoOptionsAllUsers_I) => {
+    const { userId, value } = options;
+    try {
+      console.log("in allUser uerdetailis repo");
+
+      const response = await model.find(
+        {
+          $and: [
+            {
+              $or: [
+                { userName: { $regex: value, $options: "i" } }, // case insensitive
+                { fullName: { $regex: value, $options: "i" } }, // case insensitive
+              ],
+            },
+            { _id: { $ne: userId } },
+          ],
+        },
+        { email: 0, password: 0 }
+      );
+
+      console.log("is allUser exists reponse:", response);
+      return response;
+    } catch (error) {
+      console.error("error in allUsers/ userdetailsRepo :", error);
+      throw error;
+    }
+  };
+
+  const retrieveAllUsers = async () => {
+    try {
+      const allUsers = await model.find();
+      console.log("is emailOrUserName exists reponse:", allUsers);
+      return allUsers;
+    } catch (error) {
+      console.error("error in emailOrUserName:", error);
+      throw error;
     }
   };
 
@@ -65,6 +110,8 @@ const userdetailsRepository = (model: TypeUserModel) => {
     userId,
     emailId,
     emailOrUserName,
+    allMatchingUsers,
+    retrieveAllUsers,
   };
 };
 

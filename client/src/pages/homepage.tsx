@@ -6,14 +6,9 @@ const Homepage = () => {
   const [loginTab, setLogin] = useState<boolean>(true);
   const [signupTab, setSignup] = useState<boolean>(false);
 
-  const handleLoginTab = () => {
-    setSignup(false);
-    setLogin(true);
-  };
-
-  const handleSignupTab = () => {
-    setLogin(false);
-    setSignup(true);
+  const handleAuthTabToggle = (val: boolean) => {
+    setLogin(val);
+    setSignup(!val);
   };
 
   return (
@@ -37,7 +32,7 @@ const Homepage = () => {
                     ? "tab-active md:text-lg text-stone-200"
                     : "tab md:text-lg text-stone-800"
                 } md:text-lg `}
-                onClick={handleLoginTab}
+                onClick={() => handleAuthTabToggle(true)}
               >
                 Login
               </a>
@@ -45,22 +40,22 @@ const Homepage = () => {
                 role="tab"
                 className={`tab 
                  ${
-                  signupTab
-                    ? "tab-active md:text-lg text-stone-200"
-                    : "tab md:text-lg text-stone-800"
-                } 
+                   signupTab
+                     ? "tab-active md:text-lg text-stone-200"
+                     : "tab md:text-lg text-stone-800"
+                 } 
                   md:text-lg `}
-                onClick={handleSignupTab}
+                onClick={() => handleAuthTabToggle(false)}
               >
                 Sign Up
               </a>
             </div>
-
-            {/* login */}
           </div>
           <div className="grid grid-cols-1 p-4">
             {loginTab && <LoginComp />}
-            {signupTab && <SignupComp />}
+            {signupTab && (
+              <SignupComp handleAuthTabToggle={handleAuthTabToggle} />
+            )}
           </div>
         </div>
       </div>

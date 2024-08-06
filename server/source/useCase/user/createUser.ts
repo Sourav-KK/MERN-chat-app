@@ -1,15 +1,15 @@
-import { T_superUserUserCase } from "../../Frameworks/express/services/userAuth";
+import { T_userRepoUseCase } from "../../Frameworks/express/services/userAuth";
 import { createPassword } from "../../Utilities/bcryptUtils";
 import capitalizeWords from "../../Utilities/capitalizeWord";
 import { DuplicateError } from "../../Utilities/customErrors/errorClass";
 import defaultProfilePic from "../../Utilities/defaultProfilePic";
-import { I_Signup_FormData } from "../../Utilities/interface/I_FormData";
+import { I_Signup_FormData } from "../../Utilities/interface_nd_Types/I_FormData";
 import { trimObjectValues } from "../../Utilities/trimObjVlues";
 import { signupFormValidator } from "../../Utilities/validator/signupValidator";
 
 const createUser = async (
   formData: I_Signup_FormData,
-  superUserUserCase: T_superUserUserCase
+  superUserUserCase: T_userRepoUseCase
 ) => {
   try {
     const { createUser_super, userNameSearch_super } = superUserUserCase;
@@ -36,10 +36,11 @@ const createUser = async (
     const isUserNameExists = await userNameSearch_super(trimObj.userName);
 
     if (isUserNameExists) {
-      throw new DuplicateError(
-        400,
+      console.log("User name exists in create user usecase ");
+      const err = new DuplicateError(
         `User name: ${formData.userName} already taken`
       );
+      throw err;
     }
 
     // password hashing

@@ -8,7 +8,6 @@ import auth_user_repo_useCases from "../../../useCase/repo/authUserRepo_useCase"
 import superIndex from "../../../useCase/superIndex";
 
 const authUserControl = UserAuthController(useCases);
-
 export type T_authUserControl = typeof authUserControl;
 
 // user details repo
@@ -25,8 +24,8 @@ export type T_userAuthRepo = typeof userAuthRepo;
 const user_auth_useCase = auth_user_repo_useCases(userAuthRepo);
 export type T_user_auth_useCase = typeof user_auth_useCase;
 
-const superUserUserCase = superIndex(userfindRepo, userAuthRepo);
-export type T_superUserUserCase = typeof superUserUserCase;
+const userRepoUseCase = superIndex(userfindRepo, userAuthRepo);
+export type T_userRepoUseCase = typeof userRepoUseCase;
 
 export {
   // controls
@@ -39,5 +38,7 @@ export {
   user_auth_useCase,
 
   // supser index
-  superUserUserCase,
+  userRepoUseCase,
+
+  // chat
 };

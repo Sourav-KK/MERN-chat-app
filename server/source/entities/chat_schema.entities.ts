@@ -1,10 +1,31 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import { I_User_Schema } from "../Utilities/interface/I_user_Schema";
+import { Chat_Schema_I } from "../Utilities/interface_nd_Types/I_user_Schema";
 
-const chatSchema = new Schema<I_User_Schema>({}, { timestamps: true });
+const chatSchema = new Schema<Chat_Schema_I>(
+  {
+    chatName: { type: String, trim: true },
+    isGroupChat: { type: Boolean, default: false },
+    groupDescription: { type: String, default: "" },
+    users: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "UserModel",
+      },
+    ],
+    latestMessage: {
+      type: Schema.Types.ObjectId,
+      ref: "MessageModel",
+    },
+    groupAdmin: {
+      type: Schema.Types.ObjectId,
+      ref: "UserModel",
+    },
+  },
+  { timestamps: true }
+);
 
-const Chatmodel = mongoose.model<I_User_Schema>("Chatmodel", chatSchema);
-export type TypeChatmodel = typeof Chatmodel;
+const Chatmodel = mongoose.model<Chat_Schema_I>("Chatmodel", chatSchema);
+export type Chatmodel_T = typeof Chatmodel;
 
 export default Chatmodel;

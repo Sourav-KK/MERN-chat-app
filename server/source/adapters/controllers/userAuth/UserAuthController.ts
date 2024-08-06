@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import { T_UseCases } from "../../../useCase";
-import { T_superUserUserCase } from "../../../Frameworks/express/services/userAuth";
+import { T_userRepoUseCase } from "../../../Frameworks/express/services/userAuth";
 
+//  handles user login, create user, delete user account, suspend account
 export default function UserAuthController(createNewUser: T_UseCases) {
   const { userCreation, login } = createNewUser();
 
   const userSignUp = async (
     req: Request,
     res: Response,
-    superUserUserCase: T_superUserUserCase,
-    next: NextFunction
+    next: NextFunction,
+    superUserUserCase: T_userRepoUseCase
   ) => {
     try {
       const response = await userCreation(req.body, superUserUserCase);
@@ -23,8 +24,8 @@ export default function UserAuthController(createNewUser: T_UseCases) {
   const userLoginControl = async (
     req: Request,
     res: Response,
-    superUserUserCase: T_superUserUserCase,
-    next: NextFunction
+    next: NextFunction,
+    superUserUserCase: T_userRepoUseCase
   ) => {
     try {
       const response = await login(req.body, superUserUserCase);

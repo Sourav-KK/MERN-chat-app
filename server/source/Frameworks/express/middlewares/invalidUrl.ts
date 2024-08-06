@@ -3,9 +3,11 @@ import { InvalidUrlError } from "../../../Utilities/customErrors/errorClass";
 
 export const invalidURLMiddleware = (
   req: Request,
-  _res: Response,
+  res: Response,
   _next: NextFunction
 ) => {
   console.log("in invalidURLMiddleware");
-  throw new InvalidUrlError(404, `Path Not Found:- ${req.originalUrl}`);
+  const error = new InvalidUrlError(`Path Not Found:- ${req.originalUrl}`);
+  return res.status(error.errCode).json({ errMessage: error.message });
+  // next(error);
 };

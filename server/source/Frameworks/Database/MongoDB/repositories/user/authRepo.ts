@@ -1,5 +1,5 @@
 import { TypeUserModel } from "../../../../../entities/user_schema.tntities";
-import { I_Signup_FormData } from "../../../../../Utilities/interface/I_FormData";
+import { I_Signup_FormData } from "../../../../../Utilities/interface_nd_Types/I_FormData";
 
 const authoRepo = (model: TypeUserModel) => {
   const createUser = async (userDetails: I_Signup_FormData) => {

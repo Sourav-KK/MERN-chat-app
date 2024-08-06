@@ -10,7 +10,7 @@ const Server = async () => {
     await dbConnect();
     routes();
   } catch (error) {
-    console.log("err in server");
+    console.log(error, "err in express/index");
   }
 };
 

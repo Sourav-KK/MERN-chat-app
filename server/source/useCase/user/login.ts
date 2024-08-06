@@ -1,21 +1,25 @@
-import { T_superUserUserCase } from "../../Frameworks/express/services/userAuth";
+import { T_userRepoUseCase } from "../../Frameworks/express/services/userAuth";
 import { comparePassword } from "../../Utilities/bcryptUtils";
-import { I_Login_FormData } from "../../Utilities/interface/I_FormData";
+import { I_Login_FormData } from "../../Utilities/interface_nd_Types/I_FormData";
 import { generateToken } from "../../Utilities/jwtUtils";
 import { trimObjectValues } from "../../Utilities/trimObjVlues";
 import setCookie from "../../Utilities/cookie";
 import { loginFormValidator } from "../../Utilities/validator/logInValidation";
+import { EmptyFieldError } from "../../Utilities/customErrors/errorClass";
 
 const userLoginUseCase = async (
   formData: I_Login_FormData,
-  useCase: T_superUserUserCase
+  useCase: T_userRepoUseCase
 ) => {
   try {
-    if (!formData) throw new Error("Please fill the details");
+    if (!formData) {
+      const error = new EmptyFieldError("Please fill the details");
+      throw error;
+    }
 
     const trimObj: I_Login_FormData = trimObjectValues(formData); // trim input values
 
-    console.log("trimObj:", trimObj);
+    // console.log("trimObj:", trimObj);
 
     const { error, warning } = await loginFormValidator.validate(trimObj);
 
@@ -42,13 +46,15 @@ const userLoginUseCase = async (
     );
 
     if (!isPassword) {
+      console.log("Login password failed");
       throw new Error("Entered credentials do not match any wxisting user");
     }
 
     //  jwt token generation
     const token = await generateToken(
       isEmailORUserName.userName,
-      isEmailORUserName.email
+      isEmailORUserName.email,
+      isEmailORUserName._id
     );
 
     if (!token) {

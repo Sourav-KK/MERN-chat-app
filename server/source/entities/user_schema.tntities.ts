@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import { I_User_Schema } from "../Utilities/interface/I_user_Schema";
+import { I_User_Schema } from "../Utilities/interface_nd_Types/I_user_Schema";
 
 const userSchema = new Schema<I_User_Schema>(
   {

@@ -1,5 +1,5 @@
 import { T_userAuthRepo } from "../../Frameworks/express/services/userAuth";
-import { I_Signup_FormData } from "../../Utilities/interface/I_FormData";
+import { I_Signup_FormData } from "../../Utilities/interface_nd_Types/I_FormData";
 
 const auth_user_repo_useCases = (repo: T_userAuthRepo) => {
   const { createUser } = repo;
